@@ -1,0 +1,278 @@
+[
+  {
+    "id": "reserva-do-parque",
+    "name": "Reserva do Parque",
+    "builder": "Direcional",
+    "neighborhood": "Passaré",
+    "city": "Fortaleza",
+    "address": "Endereço ilustrativo - Fortaleza, CE",
+    "price_cents": 25900000,
+    "typology": "2 quartos",
+    "bedrooms": 2,
+    "suites": 0,
+    "area_min": 45,
+    "area_max": 52,
+    "parking": 1,
+    "towers": 4,
+    "units": 320,
+    "delivery": "Janeiro/2028",
+    "status": "Em obras",
+    "published": true,
+    "demo": true,
+    "description": "Empreendimento de demonstração. Substitua os dados e fotografias pelos materiais oficiais.",
+    "seed_files": [
+      {
+        "kind": "photo",
+        "file": "residencial-1.jpg"
+      },
+      {
+        "kind": "photo",
+        "file": "residencial-2.jpg"
+      },
+      {
+        "kind": "photo",
+        "file": "residencial-3.jpg"
+      },
+      {
+        "kind": "book",
+        "file": "reserva-do-parque-book.pdf"
+      },
+      {
+        "kind": "plantas",
+        "file": "reserva-do-parque-plantas.pdf"
+      },
+      {
+        "kind": "comerciais",
+        "file": "reserva-do-parque-comerciais.pdf"
+      }
+    ]
+  },
+  {
+    "id": "jardins-do-sul",
+    "name": "Jardins do Sul",
+    "builder": "Direcional",
+    "neighborhood": "Maraponga",
+    "city": "Fortaleza",
+    "address": "Endereço ilustrativo - Fortaleza, CE",
+    "price_cents": 28900000,
+    "typology": "2 quartos com suíte",
+    "bedrooms": 2,
+    "suites": 1,
+    "area_min": 48,
+    "area_max": 58,
+    "parking": 1,
+    "towers": 3,
+    "units": 240,
+    "delivery": "Junho/2029",
+    "status": "Lançamento",
+    "published": true,
+    "demo": true,
+    "description": "Empreendimento de demonstração. Substitua os dados e fotografias pelos materiais oficiais.",
+    "seed_files": [
+      {
+        "kind": "photo",
+        "file": "residencial-2.jpg"
+      },
+      {
+        "kind": "photo",
+        "file": "residencial-3.jpg"
+      },
+      {
+        "kind": "photo",
+        "file": "residencial-1.jpg"
+      },
+      {
+        "kind": "book",
+        "file": "jardins-do-sul-book.pdf"
+      },
+      {
+        "kind": "comerciais",
+        "file": "jardins-do-sul-comerciais.pdf"
+      }
+    ]
+  },
+  {
+    "id": "vista-serena",
+    "name": "Vista Serena",
+    "builder": "Riva",
+    "neighborhood": "Centro",
+    "city": "Eusébio",
+    "address": "Endereço ilustrativo - Eusébio, CE",
+    "price_cents": 34900000,
+    "typology": "3 quartos com suíte",
+    "bedrooms": 3,
+    "suites": 1,
+    "area_min": 58,
+    "area_max": 68,
+    "parking": 2,
+    "towers": 2,
+    "units": 160,
+    "delivery": "Concluído",
+    "status": "Pronto para morar",
+    "published": true,
+    "demo": true,
+    "description": "Empreendimento de demonstração. Substitua os dados e fotografias pelos materiais oficiais.",
+    "seed_files": [
+      {
+        "kind": "photo",
+        "file": "residencial-3.jpg"
+      },
+      {
+        "kind": "photo",
+        "file": "residencial-1.jpg"
+      },
+      {
+        "kind": "photo",
+        "file": "residencial-2.jpg"
+      },
+      {
+        "kind": "book",
+        "file": "vista-serena-book.pdf"
+      },
+      {
+        "kind": "plantas",
+        "file": "vista-serena-plantas.pdf"
+      },
+      {
+        "kind": "comerciais",
+        "file": "vista-serena-comerciais.pdf"
+      }
+    ]
+  },
+  {
+    "id": "parque-das-palmeiras",
+    "name": "Parque das Palmeiras",
+    "builder": "Direcional",
+    "neighborhood": "Pajuçara",
+    "city": "Maracanaú",
+    "address": "Endereço ilustrativo - Maracanaú, CE",
+    "price_cents": 21900000,
+    "typology": "2 quartos",
+    "bedrooms": 2,
+    "suites": 0,
+    "area_min": 42,
+    "area_max": 49,
+    "parking": 1,
+    "towers": 5,
+    "units": 400,
+    "delivery": "Dezembro/2027",
+    "status": "Em obras",
+    "published": true,
+    "demo": true,
+    "description": "Empreendimento de demonstração. Substitua os dados e fotografias pelos materiais oficiais.",
+    "seed_files": [
+      {
+        "kind": "photo",
+        "file": "residencial-1.jpg"
+      },
+      {
+        "kind": "photo",
+        "file": "residencial-2.jpg"
+      },
+      {
+        "kind": "photo",
+        "file": "residencial-3.jpg"
+      },
+      {
+        "kind": "book",
+        "file": "parque-das-palmeiras-book.pdf"
+      },
+      {
+        "kind": "comerciais",
+        "file": "parque-das-palmeiras-comerciais.pdf"
+      }
+    ]
+  },
+  {
+    "id": "horizonte-residencial",
+    "name": "Horizonte Residencial",
+    "builder": "Direcional",
+    "neighborhood": "Parque Soledade",
+    "city": "Caucaia",
+    "address": "Endereço ilustrativo - Caucaia, CE",
+    "price_cents": 26900000,
+    "typology": "2 quartos com suíte",
+    "bedrooms": 2,
+    "suites": 1,
+    "area_min": 46,
+    "area_max": 55,
+    "parking": 1,
+    "towers": 4,
+    "units": 288,
+    "delivery": "Março/2029",
+    "status": "Lançamento",
+    "published": true,
+    "demo": true,
+    "description": "Empreendimento de demonstração. Substitua os dados e fotografias pelos materiais oficiais.",
+    "seed_files": [
+      {
+        "kind": "photo",
+        "file": "residencial-2.jpg"
+      },
+      {
+        "kind": "photo",
+        "file": "residencial-3.jpg"
+      },
+      {
+        "kind": "photo",
+        "file": "residencial-1.jpg"
+      },
+      {
+        "kind": "book",
+        "file": "horizonte-residencial-book.pdf"
+      },
+      {
+        "kind": "plantas",
+        "file": "horizonte-residencial-plantas.pdf"
+      },
+      {
+        "kind": "comerciais",
+        "file": "horizonte-residencial-comerciais.pdf"
+      }
+    ]
+  },
+  {
+    "id": "solar-do-lago",
+    "name": "Solar do Lago",
+    "builder": "Riva",
+    "neighborhood": "Lagoa Redonda",
+    "city": "Fortaleza",
+    "address": "Endereço ilustrativo - Fortaleza, CE",
+    "price_cents": 32900000,
+    "typology": "3 quartos com suíte",
+    "bedrooms": 3,
+    "suites": 1,
+    "area_min": 55,
+    "area_max": 64,
+    "parking": 2,
+    "towers": 2,
+    "units": 128,
+    "delivery": "Concluído",
+    "status": "Pronto para morar",
+    "published": true,
+    "demo": true,
+    "description": "Empreendimento de demonstração. Substitua os dados e fotografias pelos materiais oficiais.",
+    "seed_files": [
+      {
+        "kind": "photo",
+        "file": "residencial-3.jpg"
+      },
+      {
+        "kind": "photo",
+        "file": "residencial-1.jpg"
+      },
+      {
+        "kind": "photo",
+        "file": "residencial-2.jpg"
+      },
+      {
+        "kind": "book",
+        "file": "solar-do-lago-book.pdf"
+      },
+      {
+        "kind": "comerciais",
+        "file": "solar-do-lago-comerciais.pdf"
+      }
+    ]
+  }
+]

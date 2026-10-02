@@ -1,0 +1,11 @@
+{
+  "name": "audaz-squad",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "pnpm --dir frontend dev",
+    "build": "pnpm --dir frontend build",
+    "test:backend": "cd backend && .venv/bin/python -m pytest -q"
+  },
+  "packageManager": "pnpm@11.25.0"
+}
