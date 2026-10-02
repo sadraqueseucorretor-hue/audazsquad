@@ -1,4 +1,0 @@
-# Publica o site estático da pasta dist a cada push na branch main.
-[build]
-  publish = "dist"
-  command = ""
