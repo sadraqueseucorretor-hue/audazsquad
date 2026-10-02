@@ -1,0 +1,206 @@
+{
+ "developments": [
+  {
+   "id": "reserva-do-parque",
+   "name": "Reserva do Parque",
+   "builder": "Direcional",
+   "neighborhood": "Passaré",
+   "city": "Fortaleza",
+   "address": "Endereço ilustrativo · Passaré, Fortaleza — CE",
+   "price": 259000,
+   "status": "Em obras",
+   "typology": "2 quartos",
+   "bedrooms": 2,
+   "suites": 0,
+   "areaMin": 45,
+   "areaMax": 52,
+   "parking": 1,
+   "towers": 4,
+   "units": 320,
+   "delivery": "Janeiro/2028",
+   "description": "",
+   "photos": [
+    "assets/residencial-1.jpg",
+    "assets/residencial-2.jpg",
+    "assets/residencial-3.jpg"
+   ],
+   "materials": {
+    "book": "materials/reserva-do-parque-book.pdf",
+    "tabela": "materials/reserva-do-parque-tabela.csv",
+    "plantas": "materials/reserva-do-parque-plantas.pdf",
+    "implantacao": "materials/reserva-do-parque-implantacao.pdf",
+    "memorial": "materials/reserva-do-parque-memorial.pdf",
+    "comerciais": "materials/reserva-do-parque-comerciais.pdf",
+    "outros": "materials/reserva-do-parque-outros.pdf"
+   },
+   "demo": true,
+   "updatedAt": "2026-10-02T14:30:00-03:00"
+  },
+  {
+   "id": "jardins-do-sul",
+   "name": "Jardins do Sul",
+   "builder": "Direcional",
+   "neighborhood": "Maraponga",
+   "city": "Fortaleza",
+   "address": "Endereço ilustrativo · Maraponga, Fortaleza — CE",
+   "price": 289000,
+   "status": "Lançamento",
+   "typology": "2 quartos com suíte",
+   "bedrooms": 2,
+   "suites": 1,
+   "areaMin": 48,
+   "areaMax": 58,
+   "parking": 1,
+   "towers": 3,
+   "units": 240,
+   "delivery": "Junho/2029",
+   "description": "",
+   "photos": [
+    "assets/residencial-2.jpg",
+    "assets/residencial-3.jpg",
+    "assets/residencial-1.jpg"
+   ],
+   "materials": {
+    "book": "materials/jardins-do-sul-book.pdf",
+    "tabela": "materials/jardins-do-sul-tabela.csv",
+    "comerciais": "materials/jardins-do-sul-comerciais.pdf"
+   },
+   "demo": true,
+   "updatedAt": "2026-10-02T13:30:00-03:00"
+  },
+  {
+   "id": "vista-serena",
+   "name": "Vista Serena",
+   "builder": "Riva",
+   "neighborhood": "Centro",
+   "city": "Eusébio",
+   "address": "Endereço ilustrativo · Centro, Eusébio — CE",
+   "price": 349000,
+   "status": "Pronto para morar",
+   "typology": "3 quartos com suíte",
+   "bedrooms": 3,
+   "suites": 1,
+   "areaMin": 58,
+   "areaMax": 68,
+   "parking": 2,
+   "towers": 2,
+   "units": 160,
+   "delivery": "Concluído",
+   "description": "",
+   "photos": [
+    "assets/residencial-3.jpg",
+    "assets/residencial-1.jpg",
+    "assets/residencial-2.jpg"
+   ],
+   "materials": {
+    "book": "materials/vista-serena-book.pdf",
+    "tabela": "materials/vista-serena-tabela.csv",
+    "plantas": "materials/vista-serena-plantas.pdf",
+    "implantacao": "materials/vista-serena-implantacao.pdf",
+    "memorial": "materials/vista-serena-memorial.pdf",
+    "comerciais": "materials/vista-serena-comerciais.pdf"
+   },
+   "demo": true,
+   "updatedAt": "2026-10-02T12:30:00-03:00"
+  },
+  {
+   "id": "parque-das-palmeiras",
+   "name": "Parque das Palmeiras",
+   "builder": "Direcional",
+   "neighborhood": "Pajuçara",
+   "city": "Maracanaú",
+   "address": "Endereço ilustrativo · Pajuçara, Maracanaú — CE",
+   "price": 219000,
+   "status": "Em obras",
+   "typology": "2 quartos",
+   "bedrooms": 2,
+   "suites": 0,
+   "areaMin": 42,
+   "areaMax": 49,
+   "parking": 1,
+   "towers": 5,
+   "units": 400,
+   "delivery": "Dezembro/2027",
+   "description": "",
+   "photos": [
+    "assets/residencial-1.jpg",
+    "assets/residencial-2.jpg",
+    "assets/residencial-3.jpg"
+   ],
+   "materials": {
+    "book": "materials/parque-das-palmeiras-book.pdf",
+    "tabela": "materials/parque-das-palmeiras-tabela.csv",
+    "comerciais": "materials/parque-das-palmeiras-comerciais.pdf"
+   },
+   "demo": true,
+   "updatedAt": "2026-10-01T11:30:00-03:00"
+  },
+  {
+   "id": "horizonte-residencial",
+   "name": "Horizonte Residencial",
+   "builder": "Direcional",
+   "neighborhood": "Messejana",
+   "city": "Fortaleza",
+   "address": "Endereço ilustrativo · Messejana, Fortaleza — CE",
+   "price": 269000,
+   "status": "Lançamento",
+   "typology": "2 quartos com suíte",
+   "bedrooms": 2,
+   "suites": 1,
+   "areaMin": 46,
+   "areaMax": 55,
+   "parking": 1,
+   "towers": 4,
+   "units": 288,
+   "delivery": "Março/2029",
+   "description": "",
+   "photos": [
+    "assets/residencial-2.jpg",
+    "assets/residencial-3.jpg",
+    "assets/residencial-1.jpg"
+   ],
+   "materials": {
+    "book": "materials/horizonte-residencial-book.pdf",
+    "tabela": "materials/horizonte-residencial-tabela.csv",
+    "plantas": "materials/horizonte-residencial-plantas.pdf",
+    "implantacao": "materials/horizonte-residencial-implantacao.pdf",
+    "memorial": "materials/horizonte-residencial-memorial.pdf",
+    "comerciais": "materials/horizonte-residencial-comerciais.pdf"
+   },
+   "demo": true,
+   "updatedAt": "2026-10-01T10:30:00-03:00"
+  },
+  {
+   "id": "solar-do-lago",
+   "name": "Solar do Lago",
+   "builder": "Riva",
+   "neighborhood": "Lagoa Redonda",
+   "city": "Fortaleza",
+   "address": "Endereço ilustrativo · Lagoa Redonda, Fortaleza — CE",
+   "price": 329000,
+   "status": "Pronto para morar",
+   "typology": "3 quartos com suíte",
+   "bedrooms": 3,
+   "suites": 1,
+   "areaMin": 55,
+   "areaMax": 64,
+   "parking": 2,
+   "towers": 2,
+   "units": 128,
+   "delivery": "Concluído",
+   "description": "",
+   "photos": [
+    "assets/residencial-3.jpg",
+    "assets/residencial-1.jpg",
+    "assets/residencial-2.jpg"
+   ],
+   "materials": {
+    "book": "materials/solar-do-lago-book.pdf",
+    "tabela": "materials/solar-do-lago-tabela.csv",
+    "comerciais": "materials/solar-do-lago-comerciais.pdf"
+   },
+   "demo": true,
+   "updatedAt": "2026-10-01T09:30:00-03:00"
+  }
+ ]
+}

@@ -5,7 +5,8 @@
   "scripts": {
     "dev:frontend": "pnpm --dir frontend dev",
     "build": "pnpm --dir frontend build",
-    "test:backend": "cd backend && .venv/bin/python -m pytest -q"
+    "test:backend": "cd backend && .venv/bin/python -m pytest -q",
+    "test:site": "node --test tests/"
   },
   "packageManager": "pnpm@11.25.0"
 }

@@ -1,8 +1,35 @@
 # AUDAZ SQUAD — catálogo público e administração
 
-Monólito modular com **Python + FastAPI** no backend e **React + Vite + TypeScript** no frontend. Catálogo público, carrossel de fotos, detalhes, valores e PDFs. Login somente para administrador e gerentes autorizados. Paleta: `#F20530`, `#A60A33`, `#021D40`, `#011126`, `#F2F2F2`.
+Catálogo de empreendimentos em Fortaleza, Caucaia, Maracanaú e Eusébio, com fotos em carrossel, valores, book em PDF e materiais. Paleta: `#F20530`, `#A60A33`, `#021D40`, `#011126`, `#F2F2F2`.
 
-## Estrutura
+## Versão publicada (GitHub Pages)
+
+- **Site público** (corretores, sem login): https://sadraqueseucorretor-hue.github.io/audazsquad/
+- **Admin** (somente o dono do repositório): https://sadraqueseucorretor-hue.github.io/audazsquad/admin/
+
+O GitHub Pages publica a pasta `docs/` da branch `main` (Settings → Pages → *Deploy from a branch* → `main` / `/docs`). Não há servidor: o admin grava as mudanças direto no repositório pela API do GitHub, em um único commit por salvamento, e o Pages republica o link em cerca de 1 minuto.
+
+**Acesso ao admin:** entre com uma chave do GitHub (*fine-grained personal access token*) limitada a este repositório, com permissão *Contents: Read and write*. Só quem pode escrever no repositório consegue salvar. A chave fica apenas no navegador e é enviada somente para `api.github.com`.
+
+```text
+docs/
+  index.html, styles.css     Site público
+  admin/index.html           Painel do administrador
+  content/catalog.json       Empreendimentos (editado pelo admin)
+  content/site.json          Logo
+  content/media/<id>/        Fotos e PDFs enviados pelo admin
+  js/domain/                 Regras: cidades, status, validação, busca
+  js/application/            Casos de uso do admin (cadastrar, editar, excluir, logo)
+  js/infrastructure/         GitHub API, leitura do conteúdo, tratamento de imagens/PDF
+  js/ui/                     Componentes: cards, carrossel, materiais
+tests/                       Testes do domínio e dos casos de uso (node --test tests/)
+```
+
+Para publicar mudanças de código: `./publicar.sh "descrição"` (traz antes o que o admin salvou e depois envia).
+
+## Versão com servidor (opcional, não usada pelo link)
+
+Monólito modular com **Python + FastAPI** no backend e **React + Vite + TypeScript** no frontend, para quando houver hospedagem com servidor. Tem login com perfis e banco PostgreSQL.
 
 ```text
 backend/
@@ -21,7 +48,7 @@ frontend/
 compose.yaml           Aplicação + PostgreSQL + volumes
 ```
 
-A pasta `dist/` na raiz é o protótipo estático anterior, mantido para preservar a publicação existente. A versão nova é `frontend/` + `backend/`. Leia [a arquitetura](docs/ARCHITECTURE.md).
+Leia [a arquitetura](ARCHITECTURE.md).
 
 ## Desenvolvimento local
 

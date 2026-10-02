@@ -1,6 +1,27 @@
 # Arquitetura AUDAZ SQUAD
 
-## Decisão principal
+## Versão publicada: site estático + admin via GitHub
+
+O link público roda no GitHub Pages, sem servidor. A mesma separação em camadas vale no navegador:
+
+```text
+ui (public-app.js, admin-app.js, ui/components.js)
+    ▼
+application/admin-service.js   casos de uso; depende de contratos (repository, media)
+    ▼
+domain/catalog.js              cidades, status, validação, busca, arquivos órfãos
+    ▲
+infrastructure/                GitHubContentRepository, browserMedia, loadSiteContent
+```
+
+- **Único administrador:** gravar exige uma chave do GitHub com escrita no repositório. Não existem contas de corretor; o catálogo é público.
+- **Um commit por ação:** fotos, PDFs e `content/catalog.json` vão juntos pela Git Data API. Se o repositório mudou no meio do envio, o caso de uso recarrega e aplica de novo.
+- **Arquivos:** fotos reduzidas para até 1600 px em JPG; logo em PNG com transparência; PDFs conferidos pelo cabeçalho, até 25 MB. Arquivos substituídos ou de empreendimentos excluídos são apagados, exceto as imagens de exemplo compartilhadas.
+- **Segurança:** o admin tem Content-Security-Policy restrita a `api.github.com`; todo texto do catálogo é escapado antes de ir para o HTML.
+
+## Versão com servidor (FastAPI)
+
+### Decisão principal
 
 Monólito modular: toda a lógica de negócio está em uma única aplicação FastAPI e em um único banco. O frontend React/Vite é separado para apresentação. Nginx, API e PostgreSQL são componentes de infraestrutura da mesma aplicação; não há microsserviços de domínio.
 
@@ -22,7 +43,7 @@ infrastructure / SQLAlchemy, arquivos, hash e sessões
 PostgreSQL + volume de uploads
 ```
 
-## Camadas e SOLID
+### Camadas e SOLID
 
 - `domain`: entidades Python, invariantes de metragem e suítes, permissões e contratos. Não importa FastAPI ou SQLAlchemy.
 - `application`: cadastro de empreendimentos, anexos, usuários e identidade visual. Recebe repositórios, armazenamento e serviço de senha por contratos (`Protocol`).
@@ -31,7 +52,7 @@ PostgreSQL + volume de uploads
 - Interfaces de usuários, catálogo, transação, armazenamento e senha são separadas para que cada caso de uso dependa apenas do contrato necessário.
 - Componentes do frontend: catálogo, detalhe, carrossel, editor de empreendimento e gestão de acessos. Chamadas HTTP e sessão ficam em `lib/`.
 
-## Acesso, conforme a definição final
+### Acesso
 
 Perfis: **administrador**, **diretor**, **gerente** e **corretor**. O perfil identifica a pessoa; o que ela pode fazer vem das permissões marcadas pelo administrador. Ao escolher um perfil, o formulário sugere permissões (diretor: editar e anexar; gerente: anexar; corretor: nenhuma), que podem ser ajustadas.
 
@@ -46,11 +67,11 @@ Perfis: **administrador**, **diretor**, **gerente** e **corretor**. O perfil ide
 
 O administrador inicial é criado por comando no servidor, sem endpoint público de criação. Permissões são verificadas na API; esconder botões no frontend não é uma barreira de segurança.
 
-## Identidade visual
+### Identidade visual
 
 A logo é uma configuração do site (`BrandingService`, tabela `settings`). Aceita PNG, JPG ou WebP; é normalizada como PNG preservando a transparência, com no máximo 1200 px. SVG não é aceito, pois pode conter scripts. `GET /api/branding` informa a logo atual e `GET /api/branding/logo` a entrega publicamente.
 
-## Persistência e arquivos
+### Persistência e arquivos
 
 Migrações Alembic versionam o esquema. Cadastros e metadados persistem no banco; os arquivos ficam em volume separado. Nomes internos aleatórios evitam usar o nome do upload como caminho. Imagens são validadas, normalizadas como JPEG e têm metadados removidos. PDFs devem ser válidos e sem senha; são baixados como anexos. Limites: 20 MB por arquivo, 15 fotos por imóvel, 25 megapixels na entrada.
 
@@ -58,11 +79,11 @@ As informações flexíveis dos empreendimentos ficam em uma coluna JSON validad
 
 A vitrine retorna apenas registros publicados. O download de anexos de rascunhos também exige autorização; conhecer o endereço do arquivo não concede acesso. Os documentos de um imóvel publicado são públicos por decisão de produto.
 
-## Autenticação
+### Autenticação
 
 Senha com Argon2; token aleatório em cookie HttpOnly, SameSite=Lax e Secure em produção. O banco armazena somente o hash do token. Sessões expiram em 12 horas, e mudanças de acesso encerram sessões anteriores. Escritas exigem token CSRF, com verificação de origem no servidor. Tentativas inválidas de login têm limites por conta e origem da conexão.
 
-## Escopo e limites
+### Escopo e limites
 
 - Conteúdo real é mantido pela administração; o seed é demonstrativo e opcional.
 - Cadastro de materiais nesta versão aceita PDFs e fotos JPG/PNG/WebP. Tabelas devem ser enviadas em PDF.
