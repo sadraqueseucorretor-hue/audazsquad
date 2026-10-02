@@ -2,7 +2,7 @@ from dataclasses import asdict
 from pathlib import Path
 from sqlalchemy import JSON, Boolean, Float, ForeignKey, String, create_engine, select
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
-from app.domain.entities import Asset, Development, User
+from app.domain.entities import Asset, Branding, Development, User
 from .config import settings
 
 
@@ -33,6 +33,12 @@ class AssetRow(Base):
     development_id: Mapped[str] = mapped_column(
         ForeignKey("developments.id"), index=True
     )
+    data: Mapped[dict] = mapped_column(JSON)
+
+
+class SettingRow(Base):
+    __tablename__ = "settings"
+    key: Mapped[str] = mapped_column(String(50), primary_key=True)
     data: Mapped[dict] = mapped_column(JSON)
 
 
@@ -137,6 +143,13 @@ class SQLRepository:
         r = self.db.get(AssetRow, asset_id)
         if r:
             self.db.delete(r)
+
+    def branding(self):
+        r = self.db.get(SettingRow, "branding")
+        return Branding(**r.data) if r else Branding()
+
+    def save_branding(self, branding):
+        self.db.merge(SettingRow(key="branding", data=asdict(branding)))
 
     def commit(self):
         self.db.commit()

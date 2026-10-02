@@ -2,8 +2,11 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { LogOut, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../lib/auth";
+import { useBranding } from "../lib/branding";
+import { roleLabels } from "../lib/types";
 export function Layout() {
-  const { user, logout, can } = useAuth();
+  const { user, logout } = useAuth();
+  const { logo_url } = useBranding();
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -14,10 +17,16 @@ export function Layout() {
       </a>
       <header className="header">
         <Link to="/" className="brand">
-          <span className="brand-mark">A</span>
-          <span>
-            AUDAZ<small>S Q U A D</small>
-          </span>
+          {logo_url ? (
+            <img className="brand-logo" src={logo_url} alt="AUDAZ SQUAD" />
+          ) : (
+            <>
+              <span className="brand-mark">A</span>
+              <span>
+                AUDAZ<small>S Q U A D</small>
+              </span>
+            </>
+          )}
         </Link>
         <button
           className="mobile-menu"
@@ -29,13 +38,11 @@ export function Layout() {
         </button>
         <nav className={open ? "open" : ""} onClick={() => setOpen(false)}>
           <Link to="/">Empreendimentos</Link>
-          {(can("catalog.edit") ||
-            can("assets.manage") ||
-            can("users.manage")) && <Link to="/admin">Administração</Link>}
+          {user && <Link to="/admin">Minha área</Link>}
           {user ? (
             <>
               <span className="user-chip">
-                {user.name.split(" ")[0]} · {user.role}
+                {user.name.split(" ")[0]} · {roleLabels[user.role]}
               </span>
               <button
                 className="text-button"
@@ -50,7 +57,7 @@ export function Layout() {
             </>
           ) : (
             <Link to="/login" className="button small outline">
-              Acesso administrativo
+              Entrar
             </Link>
           )}
         </nav>
@@ -65,6 +72,7 @@ export function Layout() {
       </main>
       <footer>
         <div className="footer-brand">
+          {logo_url && <img className="footer-logo" src={logo_url} alt="" />}
           AUDAZ SQUAD<small>Central de Empreendimentos</small>
         </div>
         <p>

@@ -1,6 +1,8 @@
+from urllib.parse import quote
 from dataclasses import asdict
 from app.domain.entities import (
     Asset,
+    Branding,
     Development,
     DomainError,
     Forbidden,
@@ -15,6 +17,7 @@ from app.domain.entities import (
 )
 from app.domain.permissions import allowed, effective_permissions
 from app.domain.ports import (
+    BrandingRepository,
     FileStorage,
     PasswordHasher,
     CatalogRepository,
@@ -193,3 +196,45 @@ class UserService:
             or not set(permissions).issubset(effective_permissions(actor))
         ):
             raise Forbidden("Você não pode conceder permissões superiores às suas.")
+
+
+class BrandingService:
+    def __init__(self, repo: BrandingRepository, storage: FileStorage):
+        self.repo, self.storage = repo, storage
+
+    def present(self):
+        b = self.repo.branding()
+        return {
+            "logo_url": f"/api/branding/logo?v={quote(b.updated_at)}"
+            if b.logo_key
+            else None
+        }
+
+    def logo(self) -> Branding:
+        b = self.repo.branding()
+        if not b.logo_key:
+            raise NotFound("Nenhuma logo cadastrada.")
+        return b
+
+    def set_logo(self, actor: User, content: bytes):
+        require_admin(actor)
+        previous = self.repo.branding().logo_key
+        key, mime = self.storage.put(content, "logo")
+        try:
+            self.repo.save_branding(Branding(key, mime))
+            self.repo.commit()
+        except Exception:
+            self.storage.delete(key)
+            raise
+        if previous:
+            self.storage.delete(previous)
+        return self.present()
+
+    def remove_logo(self, actor: User):
+        require_admin(actor)
+        previous = self.repo.branding().logo_key
+        self.repo.save_branding(Branding())
+        self.repo.commit()
+        if previous:
+            self.storage.delete(previous)
+        return self.present()

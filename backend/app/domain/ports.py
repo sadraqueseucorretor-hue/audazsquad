@@ -1,7 +1,7 @@
 """Interfaces required by use cases; implementations live in infrastructure."""
 
 from typing import Protocol
-from .entities import User, Development, Asset
+from .entities import Asset, Branding, Development, User
 
 
 class Transaction(Protocol):
@@ -23,6 +23,11 @@ class CatalogRepository(Transaction, Protocol):
     def asset(self, asset_id: str) -> Asset | None: ...
     def save_asset(self, asset: Asset) -> None: ...
     def delete_asset(self, asset_id: str) -> None: ...
+
+
+class BrandingRepository(Transaction, Protocol):
+    def branding(self) -> Branding: ...
+    def save_branding(self, branding: Branding) -> None: ...
 
 
 class PasswordHasher(Protocol):

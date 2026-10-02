@@ -15,7 +15,7 @@ from fastapi import (
 from fastapi.responses import FileResponse
 from sqlalchemy import delete
 from sqlalchemy.orm import Session as DatabaseSession
-from app.application.services import CatalogService, UserService
+from app.application.services import BrandingService, CatalogService, UserService
 from app.domain.entities import require_admin, User
 from app.domain.permissions import effective_permissions
 from app.infrastructure.config import settings
@@ -77,6 +77,17 @@ def public_user(user):
     return {k: v for k, v in asdict(user).items() if k != "password_hash"} | {
         "permissions": effective_permissions(user)
     }
+
+
+async def read_upload(file: UploadFile):
+    limit = settings().max_upload_mb * 1024 * 1024
+    content = await file.read(limit + 1)
+    await file.close()
+    if len(content) > limit:
+        raise HTTPException(
+            413, f"Limite de {settings().max_upload_mb} MB por arquivo."
+        )
+    return content
 
 
 @router.get("/health")
@@ -180,13 +191,7 @@ async def upload(
     ] = Form(...),
 ):
     user = mutation(request, ctx)
-    limit = settings().max_upload_mb * 1024 * 1024
-    content = await file.read(limit + 1)
-    await file.close()
-    if len(content) > limit:
-        raise HTTPException(
-            413, f"Limite de {settings().max_upload_mb} MB por arquivo."
-        )
+    content = await read_upload(file)
     filename = Path(file.filename or "arquivo").name[:160]
     return catalog(ctx).attach(user, development_id, content, filename, kind)
 
@@ -213,6 +218,42 @@ def download_asset(asset_id: str, ctx: Context):
             "X-Content-Type-Options": "nosniff",
         },
     )
+
+
+def branding(ctx):
+    return BrandingService(ctx.repo, storage())
+
+
+@router.get("/branding")
+def get_branding(ctx: Context):
+    return branding(ctx).present()
+
+
+@router.get("/branding/logo")
+def download_logo(ctx: Context):
+    logo = branding(ctx).logo()
+    path = storage().path(logo.logo_key)
+    if not path.is_file():
+        raise HTTPException(404, "Arquivo indisponível.")
+    return FileResponse(
+        path,
+        media_type=logo.logo_content_type,
+        headers={
+            "Cache-Control": "public, max-age=86400",
+            "X-Content-Type-Options": "nosniff",
+        },
+    )
+
+
+@router.post("/admin/branding/logo")
+async def upload_logo(request: Request, ctx: Context, file: UploadFile = File(...)):
+    user = mutation(request, ctx)
+    return branding(ctx).set_logo(user, await read_upload(file))
+
+
+@router.delete("/admin/branding/logo")
+def delete_logo(request: Request, ctx: Context):
+    return branding(ctx).remove_logo(mutation(request, ctx))
 
 
 @router.get("/admin/users")

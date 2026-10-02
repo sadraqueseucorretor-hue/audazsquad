@@ -14,7 +14,9 @@ def new_id() -> str:
 
 class Role(StrEnum):
     ADMIN = "admin"
+    DIRECTOR = "diretor"
     MANAGER = "gerente"
+    BROKER = "corretor"
 
 
 class City(StrEnum):
@@ -90,6 +92,15 @@ class Asset:
     content_type: str
     size: int
     public: bool = True
+    updated_at: str = field(default_factory=now)
+
+
+@dataclass
+class Branding:
+    """Identidade visual configurada pelo administrador."""
+
+    logo_key: str | None = None
+    logo_content_type: str | None = None
     updated_at: str = field(default_factory=now)
 
 

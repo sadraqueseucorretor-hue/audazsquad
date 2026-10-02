@@ -1,6 +1,6 @@
 from typing import Literal
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
-from app.domain.entities import City
+from app.domain.entities import City, Role
 from app.domain.permissions import Permission
 
 
@@ -36,14 +36,14 @@ class UserInput(BaseModel):
     name: str = Field(min_length=2, max_length=120)
     email: EmailStr
     password: str = Field(min_length=12, max_length=128)
-    role: Literal["admin", "gerente"]
+    role: Role
     permissions: list[Permission] = Field(default_factory=list)
 
 
 class UserUpdate(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
     name: str = Field(min_length=2, max_length=120)
-    role: Literal["admin", "gerente"]
+    role: Role
     permissions: list[Permission] = Field(default_factory=list)
     active: bool
     password: str | None = Field(default=None, min_length=12, max_length=128)

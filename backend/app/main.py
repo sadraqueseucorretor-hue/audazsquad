@@ -36,7 +36,7 @@ async def request_protection(request: Request, call_next):
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     if request.url.path.startswith("/api/"):
-        response.headers["Cache-Control"] = "private, no-store"
+        response.headers.setdefault("Cache-Control", "private, no-store")
     return response
 
 

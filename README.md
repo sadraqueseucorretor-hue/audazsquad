@@ -60,8 +60,9 @@ No ambiente em que este projeto foi criado, o banco local já contém os seis ex
 2. Em **Novo empreendimento**, informe localização em Fortaleza, Caucaia, Maracanaú ou Eusébio, dados e preço.
 3. Salve o cadastro e anexe fotos ou PDFs (book, tabela, plantas e demais categorias).
 4. Marque **Visível no catálogo público** para publicar; desmarque para manter como rascunho.
-5. Em **Usuários e permissões**, crie acessos para gerentes. Escolha edição de imóveis e/ou gestão de anexos. Apenas administradores gerenciam contas.
-6. Todos os anexos dos imóveis publicados são públicos. O corretor não precisa de conta.
+5. Em **Usuários e permissões**, crie acessos para corretores, gerentes e diretores. Escolha edição de imóveis e/ou gestão de anexos. Apenas administradores gerenciam contas.
+6. Em **Logo**, envie a logo da AUDAZ SQUAD (PNG transparente, JPG ou WebP). Ela aparece no topo e no rodapé.
+7. Todos os anexos dos imóveis publicados são públicos; o catálogo pode ser consultado sem conta.
 
 ## Docker / produção
 

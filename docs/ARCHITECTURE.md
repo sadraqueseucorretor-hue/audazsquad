@@ -25,7 +25,7 @@ PostgreSQL + volume de uploads
 ## Camadas e SOLID
 
 - `domain`: entidades Python, invariantes de metragem e suítes, permissões e contratos. Não importa FastAPI ou SQLAlchemy.
-- `application`: cadastro de empreendimentos, anexos e usuários. Recebe repositórios, armazenamento e serviço de senha por contratos (`Protocol`).
+- `application`: cadastro de empreendimentos, anexos, usuários e identidade visual. Recebe repositórios, armazenamento e serviço de senha por contratos (`Protocol`).
 - `infrastructure`: implementações SQLAlchemy, arquivos locais, Argon2 e sessões persistidas. SQLite no desenvolvimento; PostgreSQL no Docker.
 - `presentation`: validação Pydantic, rotas HTTP, cookies, erros e composição de dependências.
 - Interfaces de usuários, catálogo, transação, armazenamento e senha são separadas para que cada caso de uso dependa apenas do contrato necessário.
@@ -33,16 +33,22 @@ PostgreSQL + volume de uploads
 
 ## Acesso, conforme a definição final
 
-| Ação | Público / corretor | Administrador | Gerente autorizado |
-|---|---|---|---|
-| Consultar imóveis publicados e valores | Sim | Sim | Sim |
-| Abrir fotos, books e tabelas de imóveis publicados | Sim | Sim | Sim |
-| Consultar rascunhos | Não | Sim | Se puder editar ou anexar |
-| Cadastrar, editar, publicar e retirar da vitrine | Não | Sim | Permissão `catalog.edit` |
-| Anexar e remover fotos/documentos | Não | Sim | Permissão `assets.manage` |
-| Criar acessos, alterar permissões e desativar pessoas | Não | Sim | Não |
+Perfis: **administrador**, **diretor**, **gerente** e **corretor**. O perfil identifica a pessoa; o que ela pode fazer vem das permissões marcadas pelo administrador. Ao escolher um perfil, o formulário sugere permissões (diretor: editar e anexar; gerente: anexar; corretor: nenhuma), que podem ser ajustadas.
 
-Não há cadastro de corretor para consultar o catálogo. O administrador inicial é criado por comando no servidor, sem endpoint público de criação. Permissões são verificadas na API; esconder botões no frontend não é uma barreira de segurança.
+| Ação | Público | Corretor (sem permissões) | Diretor / gerente | Administrador |
+|---|---|---|---|---|
+| Consultar imóveis publicados, valores, fotos e books | Sim | Sim | Sim | Sim |
+| Consultar rascunhos | Não | Não | Se puder editar ou anexar | Sim |
+| Cadastrar, editar, publicar e retirar da vitrine | Não | Não | Permissão `catalog.edit` | Sim |
+| Anexar e remover fotos/documentos | Não | Não | Permissão `assets.manage` | Sim |
+| Criar acessos, alterar permissões e desativar pessoas | Não | Não | Não | Sim |
+| Enviar, trocar ou remover a logo do site | Não | Não | Não | Sim |
+
+O administrador inicial é criado por comando no servidor, sem endpoint público de criação. Permissões são verificadas na API; esconder botões no frontend não é uma barreira de segurança.
+
+## Identidade visual
+
+A logo é uma configuração do site (`BrandingService`, tabela `settings`). Aceita PNG, JPG ou WebP; é normalizada como PNG preservando a transparência, com no máximo 1200 px. SVG não é aceito, pois pode conter scripts. `GET /api/branding` informa a logo atual e `GET /api/branding/logo` a entrega publicamente.
 
 ## Persistência e arquivos
 

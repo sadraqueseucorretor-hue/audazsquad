@@ -1,4 +1,18 @@
-export type Role = "gerente" | "admin";
+export type Role = "admin" | "diretor" | "gerente" | "corretor";
+export const roleLabels: Record<Role, string> = {
+  admin: "Administrador",
+  diretor: "Diretor",
+  gerente: "Gerente",
+  corretor: "Corretor",
+};
+// Sugestão inicial ao escolher um perfil; o administrador pode ajustar.
+export const rolePermissions: Record<Role, string[]> = {
+  admin: [],
+  diretor: ["catalog.edit", "assets.manage"],
+  gerente: ["assets.manage"],
+  corretor: [],
+};
+export type Branding = { logo_url: string | null };
 export type User = {
   id: string;
   name: string;

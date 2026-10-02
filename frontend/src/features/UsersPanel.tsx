@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Plus, X } from "lucide-react";
 import { api } from "../lib/api";
 import { useAuth } from "../lib/auth";
-import { User, Role } from "../lib/types";
+import { User, Role, roleLabels, rolePermissions } from "../lib/types";
 const permissionLabels: Record<string, string> = {
   "catalog.edit": "Cadastrar, editar e publicar empreendimentos",
   "assets.manage": "Anexar e remover fotos e materiais",
@@ -15,6 +15,7 @@ export function UsersPanel() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
+  const [perms, setPerms] = useState<string[]>([]);
   const load = () =>
     api<User[]>("/admin/users")
       .then(setUsers)
@@ -22,6 +23,11 @@ export function UsersPanel() {
   useEffect(() => {
     load();
   }, []);
+  function openForm(u: User | null) {
+    setEditing(u);
+    setPerms(u ? u.permissions : rolePermissions.corretor);
+    setOpen(true);
+  }
   async function save(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const d = new FormData(e.currentTarget);
@@ -63,18 +69,13 @@ export function UsersPanel() {
     <>
       <div className="section-heading">
         <div>
-          <h2>Acessos administrativos</h2>
+          <h2>Usuários e acessos</h2>
           <p className="muted">
-            Crie acessos para gerentes e escolha o que podem editar.
+            Crie acessos para corretores, gerentes e diretores e escolha o que
+            cada um pode editar.
           </p>
         </div>
-        <button
-          className="button"
-          onClick={() => {
-            setEditing(null);
-            setOpen(true);
-          }}
-        >
+        <button className="button" onClick={() => openForm(null)}>
           <Plus size={18} />
           Novo usuário
         </button>
@@ -143,21 +144,19 @@ export function UsersPanel() {
               Perfil
               <select
                 name="role"
-                defaultValue={editing?.role || "gerente"}
+                defaultValue={editing?.role || "corretor"}
                 disabled={editing?.id === user?.id}
+                onChange={(e) =>
+                  setPerms(rolePermissions[e.target.value as Role])
+                }
               >
-                {(
-                  [
-                    "gerente",
-                    ...(user?.role === "admin" ? ["admin"] : []),
-                  ] as Role[]
-                ).map((r) => (
-                  <option key={r} value={r}>
-                    {r === "admin"
-                      ? "Administrador"
-                      : r[0].toUpperCase() + r.slice(1)}
-                  </option>
-                ))}
+                {(Object.keys(roleLabels) as Role[])
+                  .filter((r) => r !== "admin" || user?.role === "admin")
+                  .map((r) => (
+                    <option key={r} value={r}>
+                      {roleLabels[r]}
+                    </option>
+                  ))}
               </select>
               {editing?.id === user?.id && (
                 <input type="hidden" name="role" value={editing?.role} />
@@ -166,6 +165,10 @@ export function UsersPanel() {
           </div>
           <fieldset className="permission-list">
             <legend>Permissões</legend>
+            <small className="muted">
+              Sem permissões, a pessoa entra e consulta o catálogo. O
+              administrador sempre tem acesso total.
+            </small>
             {Object.entries(permissionLabels)
               .filter(([key]) => user?.permissions.includes(key))
               .map(([key, label]) => (
@@ -174,7 +177,14 @@ export function UsersPanel() {
                     type="checkbox"
                     name="permissions"
                     value={key}
-                    defaultChecked={editing?.permissions.includes(key)}
+                    checked={perms.includes(key)}
+                    onChange={(e) =>
+                      setPerms(
+                        e.target.checked
+                          ? [...perms, key]
+                          : perms.filter((p) => p !== key),
+                      )
+                    }
                     disabled={editing?.id === user?.id}
                   />
                   {label}
@@ -217,16 +227,13 @@ export function UsersPanel() {
               <strong>{u.name}</strong>
               <small>{u.email}</small>
             </div>
-            <span className="pill">{u.role}</span>
+            <span className="pill">{roleLabels[u.role]}</span>
             <span className={`pill ${u.active ? "" : "inactive"}`}>
               {u.active ? "Ativo" : "Inativo"}
             </span>
             <button
               className="button small outline"
-              onClick={() => {
-                setEditing(u);
-                setOpen(true);
-              }}
+              onClick={() => openForm(u)}
             >
               Editar acesso
             </button>

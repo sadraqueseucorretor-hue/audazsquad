@@ -15,7 +15,7 @@ class LocalFileStorage:
     def put(self, content: bytes, kind: str):
         if not content or len(content) > self.max_bytes:
             raise DomainError("Arquivo vazio ou maior que o limite permitido.")
-        if kind == "photo":
+        if kind in ("photo", "logo"):
             try:
                 with Image.open(BytesIO(content)) as source:
                     if (
@@ -23,14 +23,22 @@ class LocalFileStorage:
                         or source.width * source.height > 25_000_000
                     ):
                         raise DomainError(
-                            "Envie uma foto JPG, PNG ou WebP com até 25 megapixels."
+                            "Envie uma imagem JPG, PNG ou WebP com até 25 megapixels."
                         )
-                    img = ImageOps.exif_transpose(source).convert("RGB")
-                    img.thumbnail((2000, 2000))
+                    img = ImageOps.exif_transpose(source)
                     buf = BytesIO()
-                    img.save(buf, format="JPEG", quality=85)
+                    if kind == "logo":
+                        # Logos keep transparency, so they are normalized as PNG.
+                        img = img.convert("RGBA")
+                        img.thumbnail((1200, 1200))
+                        img.save(buf, format="PNG", optimize=True)
+                        ext, mime = ".png", "image/png"
+                    else:
+                        img = img.convert("RGB")
+                        img.thumbnail((2000, 2000))
+                        img.save(buf, format="JPEG", quality=85)
+                        ext, mime = ".jpg", "image/jpeg"
                     content = buf.getvalue()
-                ext, mime = ".jpg", "image/jpeg"
             except (
                 UnidentifiedImageError,
                 OSError,

@@ -249,3 +249,98 @@ def test_disabled_account_and_login_budget(client, admin):
         ).status_code
         == 400
     )
+
+
+def png(mode="RGBA"):
+    out = BytesIO()
+    Image.new(mode, (40, 20), (242, 5, 48, 0) if mode == "RGBA" else "red").save(
+        out, format="PNG"
+    )
+    return out.getvalue()
+
+
+def login_as(role, permissions, client, admin):
+    email = f"{role}@example.com"
+    r = client.post(
+        "/api/admin/users",
+        headers=admin,
+        json={
+            "name": role.title(),
+            "email": email,
+            "password": "role-password-1234",
+            "role": role,
+            "permissions": permissions,
+        },
+    )
+    assert r.status_code == 201, r.text
+    other = TestClient(app)
+    csrf = other.post(
+        "/api/auth/login", json={"email": email, "password": "role-password-1234"}
+    ).json()["csrf"]
+    return other, {"X-CSRF-Token": csrf}
+
+
+def test_roles_broker_director_manager(client, admin, property_data):
+    broker, broker_csrf = login_as("corretor", [], client, admin)
+    assert broker.get("/api/auth/me").json()["user"]["role"] == "corretor"
+    assert broker.get("/api/developments").status_code == 200
+    assert (
+        broker.post(
+            "/api/admin/developments", headers=broker_csrf, json=property_data
+        ).status_code
+        == 403
+    )
+    director, director_csrf = login_as(
+        "diretor", ["catalog.edit", "assets.manage"], client, admin
+    )
+    assert (
+        director.post(
+            "/api/admin/developments", headers=director_csrf, json=property_data
+        ).status_code
+        == 201
+    )
+    assert director.get("/api/admin/users").status_code == 403
+    bad = client.post(
+        "/api/admin/users",
+        headers=admin,
+        json={
+            "name": "Invalido",
+            "email": "x@example.com",
+            "password": "role-password-1234",
+            "role": "estagiario",
+            "permissions": [],
+        },
+    )
+    assert bad.status_code == 422
+
+
+def test_logo_upload_is_admin_only_and_public(client, admin):
+    anon = TestClient(app)
+    assert anon.get("/api/branding").json() == {"logo_url": None}
+    assert anon.get("/api/branding/logo").status_code == 404
+    director, director_csrf = login_as(
+        "diretor", ["catalog.edit", "assets.manage"], client, admin
+    )
+    files = {"file": ("logo.png", png(), "image/png")}
+    assert (
+        director.post(
+            "/api/admin/branding/logo", headers=director_csrf, files=files
+        ).status_code
+        == 403
+    )
+    assert client.post("/api/admin/branding/logo", files=files).status_code == 403
+    r = client.post("/api/admin/branding/logo", headers=admin, files=files)
+    assert r.status_code == 200, r.text
+    logo = anon.get(r.json()["logo_url"])
+    assert logo.status_code == 200 and logo.headers["content-type"] == "image/png"
+    assert Image.open(BytesIO(logo.content)).mode == "RGBA"
+    bad = client.post(
+        "/api/admin/branding/logo",
+        headers=admin,
+        files={"file": ("logo.svg", b"<svg onload=alert(1)>", "image/svg+xml")},
+    )
+    assert bad.status_code == 400
+    assert client.delete("/api/admin/branding/logo", headers=admin).json() == {
+        "logo_url": None
+    }
+    assert anon.get("/api/branding/logo").status_code == 404

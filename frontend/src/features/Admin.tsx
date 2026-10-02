@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
-import { Plus, Building2, Users, Eye } from "lucide-react";
+import { Plus, Building2, Users, Eye, Palette } from "lucide-react";
 import { api } from "../lib/api";
 import { useAuth } from "../lib/auth";
 import { Development, money } from "../lib/types";
 import { PropertyEditor } from "./PropertyEditor";
 import { UsersPanel } from "./UsersPanel";
+import { BrandingPanel } from "./BrandingPanel";
 export function Admin() {
   const { user, loading, can } = useAuth();
   const location = useLocation();
@@ -50,7 +51,8 @@ export function Admin() {
         </Link>
       </div>
     );
-  const showUsers = tab === "users" || !catalogAccess;
+  const isAdmin = user.role === "admin";
+  const current = catalogAccess ? tab : tab === "branding" ? tab : "users";
   return (
     <div className="container admin">
       <div className="admin-heading">
@@ -67,7 +69,7 @@ export function Admin() {
       <div className="tabs">
         {catalogAccess && (
           <button
-            className={!showUsers ? "selected" : ""}
+            className={current === "catalog" ? "selected" : ""}
             onClick={() => setTab("catalog")}
           >
             <Building2 size={18} />
@@ -76,16 +78,27 @@ export function Admin() {
         )}
         {can("users.manage") && (
           <button
-            className={showUsers ? "selected" : ""}
+            className={current === "users" ? "selected" : ""}
             onClick={() => setTab("users")}
           >
             <Users size={18} />
             Usuários e permissões
           </button>
         )}
+        {isAdmin && (
+          <button
+            className={current === "branding" ? "selected" : ""}
+            onClick={() => setTab("branding")}
+          >
+            <Palette size={18} />
+            Logo
+          </button>
+        )}
       </div>
-      {showUsers ? (
+      {current === "users" ? (
         <UsersPanel />
+      ) : current === "branding" ? (
+        <BrandingPanel />
       ) : (
         <>
           {error && (
